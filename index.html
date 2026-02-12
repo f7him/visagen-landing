@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Visagen Compliance first AI for immigration case preparation</title>
+  <meta name="description" content="Visagen helps immigration law firms reduce case preparation time by 50–70% while preserving professional judgement and regulatory accountability." />
+  <meta property="og:title" content="Visagen Compliance-first AI for immigration case preparation" />
+  <meta property="og:description" content="AI-assisted preparation and validation. Mandatory human-in-the-loop. No legal advice, no eligibility decisions, no submissions." />
+  <meta name="theme-color" content="#0b1220" />
+
+  <style>
+    :root{
+      --bg: #070a12;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --faint: rgba(255,255,255,.50);
+      --border: rgba(255,255,255,.12);
+      --accent: #6ee7ff;
+      --accent2:#a78bfa;
+      --ok:#34d399;
+      --warn:#fbbf24;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(110,231,255,.16), transparent 60%),
+        radial-gradient(900px 600px at 85% 20%, rgba(167,139,250,.16), transparent 55%),
+        radial-gradient(800px 600px at 60% 90%, rgba(52,211,153,.10), transparent 55%),
+        linear-gradient(180deg, #060812 0%, #050713 35%, #040611 100%);
+      overflow-x:hidden;
+    }
+
+    a{color:inherit; text-decoration:none}
+    a:hover{opacity:.92}
+    .container{max-width:var(--max); margin:0 auto; padding:0 22px;}
+    .blur{
+      position:absolute; inset:-140px -140px auto -140px; height:420px;
+      background: linear-gradient(90deg, rgba(110,231,255,.10), rgba(167,139,250,.12), rgba(52,211,153,.08));
+      filter: blur(60px); opacity:.45; pointer-events:none;
+    }
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter: blur(10px);
+      background: rgba(6,8,18,.55);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:650; letter-spacing:.2px;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background:
+        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.55), transparent 70%),
+        linear-gradient(135deg, rgba(110,231,255,.95), rgba(167,139,250,.9));
+      box-shadow: 0 10px 24px rgba(110,231,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .brand span{color:var(--muted); font-weight:520}
+    nav ul{
+      list-style:none; padding:0; margin:0;
+      display:flex; gap:16px; align-items:center;
+    }
+    nav a{
+      color: var(--muted);
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 12px;
+    }
+    nav a:hover{background: rgba(255,255,255,.06); color: var(--text);}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .btn:hover{background: rgba(255,255,255,.09); transform: translateY(-1px);}
+    .btn.primary{
+      border-color: rgba(110,231,255,.35);
+      background: linear-gradient(135deg, rgba(110,231,255,.18), rgba(167,139,250,.14));
+    }
+    .btn.primary:hover{background: linear-gradient(135deg, rgba(110,231,255,.25), rgba(167,139,250,.20));}
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .dot{width:7px;height:7px;border-radius:50%; background: var(--ok); box-shadow: 0 0 0 4px rgba(52,211,153,.16);}
+
+    /* Hero */
+    .hero{position:relative; padding:64px 0 34px;}
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+    .hTitle{
+      font-size: clamp(34px, 4vw, 54px);
+      line-height: 1.03;
+      letter-spacing: -1.1px;
+      margin: 14px 0 14px;
+    }
+    .hSub{
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 60ch;
+      margin: 0 0 18px;
+    }
+    .actions{display:flex; gap:12px; flex-wrap:wrap; margin: 22px 0 10px;}
+    .fineprint{
+      color: var(--faint);
+      font-size: 12.5px;
+      line-height: 1.45;
+      margin-top: 12px;
+      max-width: 75ch;
+    }
+    .card{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .cardPad{padding:18px;}
+    .sideCard{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      padding:18px;
+      min-height: 100%;
+    }
+    .sideCard h3{margin:0; font-size:14px; color: var(--muted); font-weight:600; letter-spacing:.3px;}
+    .metric{
+      display:flex; justify-content:space-between; align-items:baseline;
+      padding: 12px 12px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+    }
+    .metric b{font-size: 18px;}
+    .metric span{color:var(--muted); font-size:12.5px}
+    .kpiNote{color: var(--faint); font-size: 12.5px; line-height:1.45;}
+    .tagRow{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;}
+    .tag{
+      font-size: 12px; color: var(--muted);
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+
+    /* Sections */
+    section{padding: 34px 0;}
+    .sectionTitle{
+      font-size: 20px;
+      margin: 0 0 8px;
+      letter-spacing: -.2px;
+    }
+    .sectionSub{
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 80ch;
+    }
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .feature{
+      padding: 16px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .feature h4{margin:0 0 8px; font-size: 14px; letter-spacing:.2px;}
+    .feature p{margin:0; color: var(--muted); line-height:1.5; font-size: 13.5px;}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      color: var(--muted);
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 7px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .badge .dot{background: var(--accent); box-shadow: 0 0 0 4px rgba(110,231,255,.14);}
+
+    /* Steps */
+    .steps{display:grid; gap:12px;}
+    .step{
+      display:flex; gap:12px; align-items:flex-start;
+      padding: 14px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .n{
+      flex:0 0 auto;
+      width: 28px; height: 28px;
+      border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(255,255,255,.9);
+      background: linear-gradient(135deg, rgba(110,231,255,.22), rgba(167,139,250,.18));
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .step b{display:block; font-size: 14px; margin-bottom: 4px;}
+    .step p{margin:0; color: var(--muted); font-size: 13.5px; line-height:1.5;}
+
+    /* Regulatory split */
+    .split{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .split .col{
+      padding: 16px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+      min-height: 100%;
+    }
+    .col h4{margin:0 0 10px; font-size: 14px;}
+    .col ul{margin:0; padding-left: 18px; color: var(--muted); line-height:1.6; font-size: 13.5px;}
+    .hint{
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(110,231,255,.18);
+      background: rgba(110,231,255,.08);
+      color: rgba(255,255,255,.82);
+      font-size: 12.8px;
+      line-height: 1.45;
+    }
+
+    /* CTA */
+    .cta{
+      padding: 26px;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(900px 400px at 20% 0%, rgba(110,231,255,.16), transparent 55%),
+        radial-gradient(900px 400px at 85% 10%, rgba(167,139,250,.16), transparent 55%),
+        rgba(255,255,255,.05);
+      box-shadow: var(--shadow);
+      display:flex; gap:18px; align-items:center; justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .cta h3{margin:0; font-size: 18px;}
+    .cta p{margin:6px 0 0; color: var(--muted); max-width: 70ch; line-height:1.5; font-size: 13.5px;}
+    form{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    input{
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      outline:none;
+      min-width: 240px;
+    }
+    input::placeholder{color: rgba(255,255,255,.45);}
+    .small{
+      color: var(--faint);
+      font-size: 12px;
+      line-height: 1.4;
+      margin-top: 8px;
+      max-width: 70ch;
+    }
+
+    /* Footer */
+    footer{
+      padding: 34px 0 46px;
+      color: var(--faint);
+      border-top: 1px solid rgba(255,255,255,.08);
+      margin-top: 30px;
+    }
+    .foot{
+      display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+      align-items:flex-start;
+    }
+    .legal{
+      max-width: 86ch;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: rgba(255,255,255,.58);
+    }
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .heroGrid{grid-template-columns: 1fr; }
+      nav ul{display:none;}
+      .grid3{grid-template-columns: 1fr;}
+      .grid2{grid-template-columns: 1fr;}
+      .split{grid-template-columns: 1fr;}
+      .cta{padding: 20px;}
+      input{min-width: 220px; flex: 1;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="blur"></div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#top" aria-label="Visagen home">
+          <div class="logo" aria-hidden="true"></div>
+          Visagen 
+        </a>
+
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#product">Product</a></li>
+            <li><a href="#compliance">Compliance</a></li>
+            <li><a href="#pilots">Pilots</a></li>
+          </ul>
+        </nav>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a class="btn" href="#contact">Request demo</a>
+          <a class="btn primary" href="#pilots">Run a pilot</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <div class="container hero">
+      <div class="pill"><span class="dot"></span> Human-in-the-loop • Audit-ready • Built for regulated practice</div>
+
+      <div class="heroGrid" style="margin-top:18px;">
+        <div>
+          <h1 class="hTitle">Automate immigration case prep — without crossing legal boundaries.</h1>
+          <p class="hSub">
+            Visagen is a preparation and validation layer that turns unstructured documents into
+            draft forms, checklists, and evidence packs for professional review — reducing admin-heavy
+            work while preserving judgement and accountability.
+          </p>
+
+          <div class="actions">
+            <a class="btn primary" href="#contact">Request a demo</a>
+            <a class="btn" href="#how">See how it works</a>
+          </div>
+
+          <p class="fineprint">
+            Visagen is designed to support regulated professionals: <b>no legal advice</b>, <b>no eligibility decisions</b>, and <b>no submissions</b>.
+            Final review, sign-off, and submission remain with the caseworker/supervisor. (Positioning aligned to your validation pack and regulatory background.)
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="sideCard">
+            <h3>Outcome-focused</h3>
+
+            <div class="metric">
+              <div><b>50–70%</b></div>
+              <span>typical prep time reduction target</span>
+            </div>
+
+            <div class="metric">
+              <div><b>Earlier</b></div>
+              <span>gap + inconsistency detection</span>
+            </div>
+
+            <div class="metric">
+              <div><b>Clear</b></div>
+              <span>audit trail & case controls</span>
+            </div>
+
+            <div class="tagRow">
+              <span class="tag">Structured case workspace</span>
+              <span class="tag">Extraction + validation</span>
+              <span class="tag">Draft pack generation</span>
+              <span class="tag">Case-level data isolation</span>
+            </div>
+
+            <p class="kpiNote">
+              Built for UK immigration practice realities: fixed-fee pressure, regulatory/audit risk,
+              sensitive data, and supervision quality.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROBLEM -->
+    <section id="problem">
+      <div class="container">
+        <div class="badge"><span class="dot"></span> The problem</div>
+        <h2 class="sectionTitle">Immigration case preparation is complex, manual, and high-stakes.</h2>
+        <p class="sectionSub">
+          Most time and cost comes from administrative preparation: collecting documents, extracting information,
+          checking consistency, assembling evidence, and rework when issues are found late.
+        </p>
+
+        <div class="grid3">
+          <div class="feature">
+            <h4>Applicants</h4>
+            <p>Overwhelming paperwork, repetitive data entry, high error risk.</p>
+          </div>
+          <div class="feature">
+            <h4>Law firms</h4>
+            <p>Admin-heavy workflows under fixed-fee pressure; scaling often means hiring more people.</p>
+          </div>
+          <div class="feature">
+            <h4>Employers & universities</h4>
+            <p>Time-consuming processes, compliance risk, and peak-season bottlenecks.</p>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="grid2">
+          <div class="feature">
+            <h4>Why “generic AI tools” don’t fit regulated work</h4>
+            <p>No auditability, no case-level controls, and unclear boundaries that can blur accountability.</p>
+          </div>
+          <div class="feature">
+            <h4>Where risk concentrates today</h4>
+            <p>Fragmented channels + manual re-entry means inconsistencies are often discovered late, under deadline pressure.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW -->
+    <section id="how">
+      <div class="container">
+        <div class="badge"><span class="dot"></span> How Visagen works</div>
+        <h2 class="sectionTitle">Same actors. Same accountability. Better infrastructure.</h2>
+        <p class="sectionSub">
+          Visagen introduces structure and validation at the start of preparation, then generates drafts for humans to review and approve.
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="n">01</div>
+            <div>
+              <b>Upload documents into a structured case workspace</b>
+              <p>Replace scattered email/portal/message uploads with one case context.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">02</div>
+            <div>
+              <b>Extract, normalise, and validate information</b>
+              <p>Identify gaps and internal inconsistencies early — before the deadline crunch.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">03</div>
+            <div>
+              <b>Generate draft forms, checklists, and evidence packs</b>
+              <p>Draft materials are prepared for review, not submission.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">04</div>
+            <div>
+              <b>Caseworker edits. Supervisor signs off. Submission happens externally.</b>
+              <p>Human judgement stays central; Visagen strengthens preparation and auditability.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hint">
+          Visagen is a <b>preparation + validation layer</b>, not a decision-maker — it sits between documents and professionals,
+          not between professionals and judgement.
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT -->
+    <section id="product">
+      <div class="container">
+        <div class="badge"><span class="dot"></span> Product</div>
+        <h2 class="sectionTitle">Four-layer architecture designed for repeatability and auditability.</h2>
+        <p class="sectionSub">
+          The core system focuses on defensible automation: document handling, extraction, schema-based rules, and pack generation.
+        </p>
+
+        <div class="grid2">
+          <div class="feature">
+            <h4>Document processing</h4>
+            <p>OCR, auto-splitting, classification, and quality checks.</p>
+          </div>
+          <div class="feature">
+            <h4>AI extract + reasoning</h4>
+            <p>Identity extraction, history parsing, cross-checking, and gap detection.</p>
+          </div>
+          <div class="feature">
+            <h4>Visa logic engine</h4>
+            <p>Schema-based rules, dynamic forms, multi-route scalability, compliance triggers.</p>
+          </div>
+          <div class="feature">
+            <h4>Pack generator</h4>
+            <p>Draft forms, cover letters, checklists, and evidence organisation for review.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPLIANCE -->
+    <section id="compliance">
+      <div class="container">
+        <div class="badge"><span class="dot"></span> Compliance & regulation</div>
+        <h2 class="sectionTitle">Built to innovate — without creating compliance risk.</h2>
+        <p class="sectionSub">
+          Visagen is designed to operate cleanly within regulated environments, with explicit boundaries and oversight.
+        </p>
+
+        <div class="split">
+          <div class="col">
+            <h4>Visagen Technologies Ltd (software)</h4>
+            <ul>
+              <li>Builds and sells the software platform</li>
+              <li>No immigration advice</li>
+              <li>No UKVI submissions</li>
+              <li>Pure technology layer</li>
+            </ul>
+          </div>
+
+          <div class="col">
+            <h4>Visagen Legal LLP (regulated service)</h4>
+            <ul>
+              <li>OISC/SRA regulated entity (as applicable)</li>
+              <li>Human-reviewed cases</li>
+              <li>Client representations</li>
+              <li>Hybrid AI + human services</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="grid2">
+          <div class="feature">
+            <h4>Clear boundaries</h4>
+            <p>AI supports preparation tasks; it does not provide advice, determine eligibility, or make decisions.</p>
+          </div>
+          <div class="feature">
+            <h4>Designed for audit readiness</h4>
+            <p>Human approval, explainable outputs, and a workflow designed for oversight and defensibility.</p>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="feature">
+          <h4>Data protection, cybersecurity, and trust</h4>
+          <p>
+            Designed with UK GDPR / DPA 2018 principles in mind: case-level data isolation, role-based access, and audit logging.
+            Client data is not used to train models and is processed only for the relevant matter. Controls align with UK standards
+            such as Cyber Essentials and ISO 27001 principles (least privilege, secure handling, separated environments).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PILOTS / GTM -->
+    <section id="pilots">
+      <div class="container">
+        <div class="badge"><span class="dot"></span> Validation & go-to-market</div>
+        <h2 class="sectionTitle">Start with high-volume, document-heavy routes.</h2>
+        <p class="sectionSub">
+          Initial focus: UK immigration law firms. Early routes prioritise faster time-to-value and lower risk
+          while proving measurable preparation-time reduction.
+        </p>
+
+        <div class="grid3">
+          <div class="feature">
+            <h4>Citizenship & settlement</h4>
+            <p>Document repetition, clear preparation patterns, strong fit for structured validation.</p>
+          </div>
+          <div class="feature">
+            <h4>Skilled Worker visas</h4>
+            <p>Repeatable workflows where admin overhead can be reduced with early validation.</p>
+          </div>
+          <div class="feature">
+            <h4>Student visas (later)</h4>
+            <p>Expand once pilots prove outcomes, supervision flow, and operational safety.</p>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="grid2">
+          <div class="feature">
+            <h4>What we validate in pilots</h4>
+            <p>Which application types deliver fastest value, where operational pain is greatest, and what time reduction drives adoption.</p>
+          </div>
+          <div class="feature">
+            <h4>What “success” looks like</h4>
+            <p>Reduced rework, fewer last-minute escalations, improved supervision quality, and a clearer audit trail.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="contact">
+      <div class="container">
+        <div class="cta">
+          <div>
+            <h3>Want to run a low-risk pilot with your team?</h3>
+            <p>
+              We’ll map one workflow, agree success metrics (time saved + rework reduction), and validate fit with your supervision and compliance requirements.
+            </p>
+            <div class="small">
+              For now this form is static — wire it to your email/CRM later (or replace with a Calendly link).
+            </div>
+          </div>
+
+          <div>
+            <form onsubmit="return fakeSubmit(event)">
+              <input id="email" type="email" placeholder="Work email" required />
+              <button class="btn primary" type="submit">Request pilot</button>
+              <a class="btn" href="mailto:hello@visagen.ai?subject=Visagen%20Demo%20Request">Email us</a>
+            </form>
+            <div id="msg" class="small" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="foot">
+          <div>
+            <div class="brand" style="margin-bottom:10px;">
+              <div class="logo" aria-hidden="true"></div>
+              Visagen
+            </div>
+            <div class="legal">
+              <b>Important:</b> Visagen is designed to support preparation and validation tasks for immigration matters.
+              It does not provide legal advice, does not determine eligibility, and does not submit applications.
+              Professional judgement and regulatory accountability remain with regulated professionals.
+            </div>
+          </div>
+
+          <div style="min-width:260px;">
+            <div class="legal">
+              <b>Private & Confidential</b><br/>
+              © <span id="year"></span> Visagen. All rights reserved.
+            </div>
+            <div style="height:10px"></div>
+            <div class="legal">
+              <a href="#top">Back to top</a> •
+              <a href="#compliance">Compliance</a> •
+              <a href="#pilots">Pilots</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Smooth scroll for internal anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener("click", (e) => {
+        const id = a.getAttribute("href");
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    // Static demo form handler
+    function fakeSubmit(e){
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const msg = document.getElementById('msg');
+      msg.textContent = email
+        ? `Thanks — we’ll reach out to ${email} shortly.`
+        : `Thanks — we’ll reach out shortly.`;
+      document.getElementById('email').value = "";
+      return false;
+    }
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
